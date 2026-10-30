@@ -1,0 +1,58 @@
+---
+import { nav, site } from '../site';
+
+const { active = '' } = Astro.props as { active?: string };
+---
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a href="/" class="brand" aria-label={`${site.fullName}, home`}>
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>{site.fullName.toUpperCase()}</span>
+    </a>
+    <nav aria-label="Primary" class="nav-links">
+      {
+        nav.map((item, i) => (
+          <a href={item.href} aria-current={active === item.id ? 'page' : undefined}>
+            <span class="nav-num" aria-hidden="true">[0{i + 1}]</span> {item.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky; top: 0; z-index: 40;
+    border-bottom: 1px solid var(--line-soft);
+    background: rgba(7, 8, 11, 0.9);
+    backdrop-filter: blur(18px);
+  }
+  .nav-inner {
+    min-height: 80px; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 8px 24px;
+  }
+  .nav-links { justify-self: end; }
+  .brand { display: inline-flex; align-items: center; gap: 11px; min-height: 44px; font-size: 14px; font-weight: 500; letter-spacing: 0.13em; justify-self: start; }
+  .brand-mark { flex: none; width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--cyan); position: relative; }
+  .brand-mark::after { content: ''; position: absolute; top: -1px; bottom: -1px; left: 8px; width: 1px; background: var(--cyan); }
+  .nav-links { display: flex; gap: 4px 26px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; }
+  .nav-links a { display: inline-flex; align-items: center; min-height: 44px; color: var(--muted); transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a[aria-current='page'] { color: var(--cyan); }
+  .nav-num { color: var(--subtle); margin-right: 4px; }
+  .nav-links a[aria-current='page'] .nav-num { color: var(--cyan); }
+
+  @media (max-width: 1240px) {
+    .nav-num { display: none; }
+    .nav-links { gap: 4px 20px; }
+  }
+  @media (max-width: 960px) {
+    .nav-inner { grid-template-columns: minmax(0, 1fr); padding-block: 8px; }
+    .nav-links { justify-self: stretch; grid-row: 2; overflow-x: auto; scrollbar-width: none; gap: 0 22px; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); }
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-links a { flex: none; }
+  }
+  @media (max-width: 480px) {
+    .brand { font-size: 12px; letter-spacing: 0.06em; gap: 9px; }
+  }
+</style>

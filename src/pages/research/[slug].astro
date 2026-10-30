@@ -1,0 +1,115 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Flow from '../../components/Flow.astro';
+import Aside from '../../components/Aside.astro';
+import Related from '../../components/Related.astro';
+import { getResearch, getProjects, getPosts, neighbors, pick } from '../../lib/content';
+import { formatMonth } from '../../site';
+
+export async function getStaticPaths() {
+  const research = await getResearch();
+  return research.map((entry, i) => ({ params: { slug: entry.id }, props: { entry, ...neighbors(research, i) } }));
+}
+
+const { entry, prev, next } = Astro.props;
+const r = entry.data;
+const { Content } = await render(entry);
+const posts = await getPosts();
+const related = [
+  ...pick(await getProjects(), r.related).map((p) => ({ kind: 'Project', title: p.data.title, href: `/work/${p.id}` })),
+  ...posts.filter((post) => post.data.research.includes(entry.id)).map((post) => ({ kind: 'Writing', title: post.data.title, href: `/writing/${post.id}` })),
+];
+const isMe = (name: string) => /Sri Varshini/.test(name);
+---
+
+<Base title={r.shortTitle} description={r.summary} active="research">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/research">Research</a> / <span aria-current="page">{r.shortTitle}</span></nav>
+
+    <header class="page-head">
+      <p class="label">{[r.kind, r.venue, formatMonth(r.date), r.status].filter(Boolean).join(' · ')}</p>
+      <h1 class="h2 title">{r.title}</h1>
+      {r.authors.length > 0 && (
+        <p class="authors">
+          {r.authors.map((a, i) => <>{i > 0 && ', '}<span class:list={{ me: isMe(a) }}>{a}</span></>)}
+        </p>
+      )}
+      <div class="link-row">
+        {r.links.paper && <a href={r.links.paper} target="_blank" rel="noreferrer" class="btn btn-primary">Read on arXiv ↗</a>}
+        {r.links.pdf && <a href={r.links.pdf} target="_blank" rel="noreferrer" class="btn btn-secondary">PDF ↓</a>}
+        {r.links.code && <a href={r.links.code} target="_blank" rel="noreferrer" class={r.links.paper ? 'btn btn-secondary' : 'btn btn-primary'}>Code on GitHub ↗</a>}
+      </div>
+    </header>
+
+    <Flow steps={r.flow} size="large" label={r.kind === 'Publication' ? 'Compared' : 'Pipeline'} />
+
+    <div class="detail">
+      <article>
+        {r.metrics.length > 0 && (
+          <dl class="metrics headline">
+            {r.metrics.map((m) => <div><dt>{m.label}</dt><dd>{m.value}</dd></div>)}
+          </dl>
+        )}
+        <div class="prose numbered"><Content /></div>
+
+        {r.citation && (
+          <section class="block cite">
+            <div class="cite-head">
+              <h2 class="block-title">Cite</h2>
+              <button type="button" class="btn btn-secondary" data-copy="#citation">Copy BibTeX</button>
+            </div>
+            <pre id="citation">{r.citation.trim()}</pre>
+          </section>
+        )}
+      </article>
+
+      <Aside
+        title="Details"
+        rows={[
+          { label: 'Venue', value: r.venue },
+          { label: 'Published', value: formatMonth(r.date) },
+          { label: 'My role', value: r.role },
+          { label: 'Topics', value: r.topics.join(' · ') },
+        ]}
+      />
+    </div>
+
+    <Related items={related} />
+
+    <nav class="pager" aria-label="More research">
+      {prev ? <a href={`/research/${prev.id}`}><span>← Previous</span><span>{prev.data.shortTitle}</span></a> : <a href="/research"><span>← Back to</span><span>All research</span></a>}
+      {next ? <a href={`/research/${next.id}`}><span>Next →</span><span>{next.data.shortTitle}</span></a> : <a href="/research"><span>Back to</span><span>All research</span></a>}
+    </nav>
+  </div>
+</Base>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const text = document.querySelector(button.dataset.copy!)?.textContent ?? '';
+      try {
+        await navigator.clipboard.writeText(text);
+        button.textContent = 'Copied ✓';
+      } catch {
+        button.textContent = 'Select and copy';
+      }
+      setTimeout(() => (button.textContent = 'Copy BibTeX'), 2000);
+    });
+  });
+</script>
+
+<style>
+  .page-head { padding-top: 40px; }
+  .title { max-width: 1000px; }
+  .authors { margin: 0; font-size: 16px; color: var(--muted); }
+  .me { color: var(--text); border-bottom: 1px solid var(--cyan); }
+  .link-row { gap: 12px; }
+  .headline { padding-bottom: 40px; margin-bottom: 48px; border-bottom: 1px solid var(--line); }
+  .cite { margin-top: 64px; }
+  .cite-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+  .cite pre {
+    margin: 0; padding: 20px 22px; border: 1px solid var(--line); background: var(--surface-2);
+    font-family: var(--mono); font-size: 13px; line-height: 1.7; color: #c9cbc8; overflow-x: auto;
+  }
+</style>

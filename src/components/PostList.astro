@@ -1,0 +1,47 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { formatMonth, readingTime } from '../site';
+
+interface Props {
+  posts: CollectionEntry<'writing'>[];
+  id?: string;
+}
+const { posts, id } = Astro.props;
+---
+
+{
+  posts.length > 0 ? (
+    <ul class="rows" id={id}>
+      {posts.map((post) => (
+        <li class="reveal" data-filter-item data-tags={post.data.tags.map((t) => t.toLowerCase().replace(/\s+/g, '-')).join(' ')}>
+          <a href={`/writing/${post.id}`} class="row">
+            <span class="label subtle">
+              {formatMonth(post.data.date)} · {readingTime(post.body)} min
+            </span>
+            <span>
+              <span class="row-title">
+                {post.data.title}
+                {post.data.draft && <span class="badge draft">Draft</span>}
+              </span>
+              <span class="row-sub" style="display:block">{post.data.description}</span>
+            </span>
+            <span class="row-arrow">Read →</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <div class="empty">
+      <p class="label subtle">No posts yet</p>
+      <p class="empty-title">First posts are on the way.</p>
+      <p class="muted">Technical notes on agents, evaluation and infrastructure. New posts are announced on X.</p>
+    </div>
+  )
+}
+
+<style>
+  .draft { margin-left: 12px; vertical-align: middle; padding: 3px 8px; }
+  .empty { border: 1px dashed var(--line); padding: clamp(24px, 4vw, 40px); display: flex; flex-direction: column; gap: 10px; }
+  .empty p { margin: 0; }
+  .empty-title { font-size: clamp(22px, 2.4vw, 30px); font-weight: 300; letter-spacing: -0.02em; }
+</style>

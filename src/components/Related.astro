@@ -1,0 +1,32 @@
+---
+interface Item {
+  kind: string;
+  title: string;
+  href: string;
+}
+interface Props {
+  items: Item[];
+  title?: string;
+}
+const { items, title = 'Related' } = Astro.props;
+---
+
+{
+  items.length > 0 && (
+    <section class="related" aria-label={title}>
+      <p class="label subtle">{title}</p>
+      <div class="card-grid">
+        {items.map((item) => (
+          <a href={item.href} class="mini-card">
+            <span class="label subtle">{item.kind}</span>
+            <span class="mini-title">{item.title} →</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .related { margin-top: 80px; padding-top: 40px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 20px; }
+</style>

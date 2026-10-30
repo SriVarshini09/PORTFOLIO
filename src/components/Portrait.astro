@@ -1,0 +1,29 @@
+---
+// Framed portrait photo. Falls back to an empty frame until public/photo.* exists.
+import { photo, site } from '../site';
+
+interface Props {
+  eager?: boolean;
+}
+const { eager = false } = Astro.props;
+---
+
+<figure class="portrait">
+  {
+    photo ? (
+      <img src={photo} alt={`Photo of ${site.name}`} width="480" height="640" loading={eager ? 'eager' : 'lazy'} decoding="async" />
+    ) : (
+      <span class="empty">Add public/photo.webp</span>
+    )
+  }
+</figure>
+
+<style>
+  .portrait {
+    margin: 0; width: 100%; aspect-ratio: 3 / 4; overflow: hidden; border-radius: 10px;
+    border: 1px solid var(--line); background: var(--surface);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(139, 220, 248, 0.04);
+  }
+  .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .empty { height: 100%; display: grid; place-items: center; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--subtle); }
+</style>

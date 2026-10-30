@@ -1,0 +1,82 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Aside from '../../components/Aside.astro';
+import Related from '../../components/Related.astro';
+import { getExperience, getProjects, getResearch, neighbors, pick } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const roles = await getExperience();
+  return roles.map((entry, i) => ({ params: { slug: entry.id }, props: { entry, ...neighbors(roles, i) } }));
+}
+
+const { entry, prev, next } = Astro.props;
+const r = entry.data;
+const { Content } = await render(entry);
+const related = [
+  ...pick(await getProjects(), r.projects).map((p) => ({ kind: 'Project', title: p.data.title, href: `/work/${p.id}` })),
+  ...pick(await getResearch(), r.research).map((x) => ({ kind: 'Research', title: x.data.shortTitle, href: `/research/${x.id}` })),
+];
+---
+
+<Base title={`${r.role}, ${r.short}`} description={r.summary} active="experience">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/experience">Experience</a> / <span aria-current="page">{r.role}, {r.short}</span></nav>
+
+    <header class="page-head">
+      <p class="label">{r.start} — {r.end}{r.location && ` · ${r.location}`}</p>
+      <h1 class="h1">{r.role}</h1>
+      <p class="lead big">{r.org}</p>
+    </header>
+
+    <div class="detail">
+      <article>
+        <section class="block">
+          <p class="label">01 /</p>
+          <h2 class="block-title">Context</h2>
+          <div class="prose"><Content /></div>
+        </section>
+
+        {r.owned.length > 0 && (
+          <section class="block">
+            <p class="label">02 /</p>
+            <h2 class="block-title">What I owned</h2>
+            <ol class="owned">{r.owned.map((o) => <li>{o}</li>)}</ol>
+          </section>
+        )}
+
+        {r.metrics.length > 0 && (
+          <section class="block">
+            <p class="label">03 /</p>
+            <h2 class="block-title">Outcomes</h2>
+            <dl class="metrics">{r.metrics.map((m) => <div><dt>{m.label}</dt><dd>{m.value}</dd></div>)}</dl>
+          </section>
+        )}
+      </article>
+
+      <Aside
+        rows={[
+          { label: 'Dates', value: `${r.start} — ${r.end}` },
+          { label: 'Organization', value: r.org },
+          { label: 'Type', value: r.type },
+          { label: 'Skills', value: r.skills.join(' · ') },
+        ]}
+      />
+    </div>
+
+    <Related items={related} title="What came out of it" />
+
+    <nav class="pager" aria-label="More experience">
+      {prev ? <a href={`/experience/${prev.id}`}><span>← Previous</span><span>{prev.data.role}, {prev.data.short}</span></a> : <a href="/experience"><span>← Back to</span><span>All experience</span></a>}
+      {next ? <a href={`/experience/${next.id}`}><span>Next →</span><span>{next.data.role}, {next.data.short}</span></a> : <a href="/experience"><span>Back to</span><span>All experience</span></a>}
+    </nav>
+  </div>
+</Base>
+
+<style>
+  .page-head { padding-top: 40px; border-bottom: 1px solid var(--line-soft); }
+  .big { font-size: clamp(18px, 1.8vw, 22px); }
+  article .block:first-child { margin-top: 0; }
+  article .block .label { margin-bottom: -6px; }
+  article .block + .block { margin-top: 64px; }
+</style>

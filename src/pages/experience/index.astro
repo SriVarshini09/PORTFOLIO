@@ -1,0 +1,70 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getExperience, getProjects } from '../../lib/content';
+import { hackathons, site, hasResume } from '../../site';
+
+const roles = await getExperience();
+const projects = await getProjects();
+const nameOf = (id: string) => projects.find((p) => p.id === id)?.data.title ?? id;
+---
+
+<Base title="Experience" description="Sri Varshini's experience in AI research and machine learning engineering." active="experience">
+  <div class="wrap">
+    <header class="page-head">
+      <p class="label">Experience</p>
+      <h1 class="h1">Where I’ve <span class="accent">worked.</span></h1>
+      {hasResume && <div><a href={site.resume} class="btn btn-secondary" target="_blank" rel="noreferrer">Resume ↓</a></div>}
+    </header>
+
+    <section aria-labelledby="roles-title">
+      <h2 id="roles-title" class="label subtle group-title">Roles</h2>
+      <ul class="rows">
+        {roles.map((r) => (
+          <li class="reveal">
+            <a href={`/experience/${r.id}`} class="row role">
+              <span class="label subtle">{r.data.start} — {r.data.end}</span>
+              <span class="role-copy">
+                <span class="row-title">{r.data.role}</span>
+                <span class="row-sub" style="display:block">{r.data.org}</span>
+                <span class="role-summary">{r.data.summary}</span>
+                <span class="tags">{r.data.skills.slice(0, 3).map((s) => <span class="tag">{s}</span>)}</span>
+              </span>
+              <span class="row-arrow">Details →</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section aria-labelledby="hack-title" class="hack">
+      <h2 id="hack-title" class="label subtle group-title">Hackathons</h2>
+      <ul class="rows">
+        {hackathons.map((h) => (
+          <li class="row">
+            <span class="label subtle">{h.date}</span>
+            <span>
+              <span class="row-title">{h.name}</span>
+              <span class="row-sub" style="display:block">
+                Built {h.built.map((id, i) => <>{i > 0 && ' and '}<a href={`/work/${id}`} class="inline">{nameOf(id)}</a></>)}
+              </span>
+            </span>
+            <span></span>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <p class="muted edu">Education is on the <a href="/about#education" class="inline">About page →</a></p>
+  </div>
+</Base>
+
+<style>
+  .group-title { margin: 0 0 18px; }
+  .role { padding-block: 34px; }
+  .role-copy { display: flex; flex-direction: column; gap: 4px; }
+  .role-summary { color: var(--muted); font-size: 16px; margin: 12px 0 16px; max-width: 720px; }
+  .hack { margin-top: 80px; }
+  .inline { color: var(--cyan); border-bottom: 1px solid #2d4853; }
+  .inline:hover { border-color: var(--cyan); }
+  .edu { margin-top: 56px; }
+</style>

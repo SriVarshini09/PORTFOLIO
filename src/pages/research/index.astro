@@ -1,0 +1,51 @@
+---
+import Base from '../../layouts/Base.astro';
+import Flow from '../../components/Flow.astro';
+import { getResearch } from '../../lib/content';
+import { formatMonth } from '../../site';
+
+const research = await getResearch();
+---
+
+<Base title="Research" description="Research by Sri Varshini on model evaluation, efficient deep learning and the reliability of retrieval-augmented systems." active="research">
+  <div class="wrap">
+    <header class="page-head">
+      <p class="label">Research · {research.length} entries</p>
+      <h1 class="h1">Research that <span class="accent">measures.</span></h1>
+      <p class="lead">Model evaluation, efficient deep learning and the reliability of retrieval-augmented systems.</p>
+    </header>
+
+    <div class="list">
+      {research.map((r) => (
+        <article class="entry reveal">
+          <Flow steps={r.data.flow} />
+          <div class="entry-copy">
+            <p class="label subtle">{[r.data.kind, r.data.venue, formatMonth(r.data.date), r.data.role].filter(Boolean).join(' · ')}</p>
+            <h2 class="h3"><a href={`/research/${r.id}`}>{r.data.title}</a></h2>
+            <p class="muted">{r.data.summary}</p>
+            {r.data.metrics.length > 0 && (
+              <dl class="metrics">
+                {r.data.metrics.map((m) => <div><dt>{m.label}</dt><dd>{m.value}</dd></div>)}
+              </dl>
+            )}
+            <div class="link-row">
+              <a href={`/research/${r.id}`} class="btn btn-primary">Read summary <span aria-hidden="true">→</span></a>
+              {r.data.links.paper && <a href={r.data.links.paper} target="_blank" rel="noreferrer" class="text-link"><span>Paper ↗</span></a>}
+              {r.data.links.code && <a href={r.data.links.code} target="_blank" rel="noreferrer" class="text-link"><span>Code ↗</span></a>}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</Base>
+
+<style>
+  .list { border-top: 1px solid var(--line); }
+  .entry { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 32px 56px; padding-block: 48px; border-bottom: 1px solid var(--line); align-items: center; }
+  .entry-copy { display: flex; flex-direction: column; gap: 18px; }
+  .entry-copy p { margin: 0; }
+  .entry-copy h2 a:hover { color: var(--cyan); }
+  .link-row { margin-top: 6px; gap: 12px 24px; }
+  @media (max-width: 900px) { .entry { grid-template-columns: minmax(0, 1fr); } }
+</style>

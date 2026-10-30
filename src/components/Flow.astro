@@ -1,0 +1,41 @@
+---
+// The small "how it works" diagram used on cards and detail pages: a row of steps, last one lit.
+interface Props {
+  steps: string[];
+  label?: string;
+  size?: 'card' | 'large';
+}
+const { steps, label, size = 'card' } = Astro.props;
+---
+
+<figure class:list={['flow', size]} aria-label={label ?? steps.join(' then ')}>
+  {label && <figcaption class="flow-label">{label}</figcaption>}
+  <ol class="flow-steps">
+    {
+      steps.map((step, i) => (
+        <li class:list={[{ last: i === steps.length - 1 }]}>
+          <span>{step}</span>
+        </li>
+      ))
+    }
+  </ol>
+</figure>
+
+<style>
+  .flow {
+    position: relative; margin: 0; border: 1px solid var(--line);
+    background: radial-gradient(circle at 55% 40%, rgba(139, 220, 248, 0.05), transparent 40%), #090c10;
+    display: flex; align-items: center; justify-content: center; padding: 40px 20px;
+  }
+  .flow.card { min-height: 180px; }
+  .flow.large { min-height: clamp(220px, 24vw, 320px); padding: 56px 24px; }
+  .flow-label { position: absolute; top: 14px; left: 16px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--subtle); }
+  .flow-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px 0; }
+  .flow-steps li { display: flex; align-items: center; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #9cb1ba; }
+  .flow-steps li span { padding: 11px 12px; border: 1px solid #31454e; background: rgba(7, 8, 11, 0.6); white-space: nowrap; }
+  .flow-steps li:not(:last-child)::after { content: '→'; color: var(--cyan); padding: 0 8px; }
+  .flow-steps li.last span { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 24px rgba(139, 220, 248, 0.08); }
+  .large .flow-steps li { font-size: 12px; }
+  .large .flow-steps li span { padding: 16px 18px; }
+  .large .flow-steps li:not(:last-child)::after { padding: 0 14px; }
+</style>

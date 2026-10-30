@@ -1,0 +1,115 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Flow from '../../components/Flow.astro';
+import Aside from '../../components/Aside.astro';
+import Related from '../../components/Related.astro';
+import { getProjects, getPosts, neighbors, pick } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project, i) => ({ params: { slug: project.id }, props: { project, ...neighbors(projects, i) } }));
+}
+
+const { project, prev, next } = Astro.props;
+const p = project.data;
+const { Content, headings } = await render(project);
+
+// Markdown sections come first (01, 02…); the structured blocks continue the numbering.
+let n = headings.filter((h) => h.depth === 2).length;
+const num = () => String(++n).padStart(2, '0') + ' /';
+
+const all = await getProjects();
+const posts = await getPosts();
+const related = [
+  ...posts.filter((post) => post.data.projects.includes(project.id)).map((post) => ({ kind: 'Writing', title: post.data.title, href: `/writing/${post.id}` })),
+  ...pick(all, p.related).map((r) => ({ kind: 'Project', title: r.data.title, href: `/work/${r.id}` })),
+];
+const links = [
+  p.links.live && { label: `${new URL(p.links.live).host} ↗`, href: p.links.live },
+  p.links.repo && { label: 'GitHub ↗', href: p.links.repo },
+].filter(Boolean) as { label: string; href: string }[];
+---
+
+<Base title={p.title} description={`${p.title}: ${p.summary}`} active="work">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/work">Work</a> / <span aria-current="page">{p.title}</span></nav>
+
+    <header class="page-head">
+      <div class="top">
+        <span class="label subtle">{p.tag}</span>
+        {p.building && <span class="badge"><span class="dot" aria-hidden="true"></span>Currently building</span>}
+      </div>
+      <h1 class="h1">{p.title}</h1>
+      <p class="lead big">{p.summary}</p>
+      <div class="link-row">
+        {p.links.live && <a href={p.links.live} target="_blank" rel="noreferrer" class="btn btn-primary">Live site ↗</a>}
+        {p.links.repo && <a href={p.links.repo} target="_blank" rel="noreferrer" class={p.links.live ? 'btn btn-secondary' : 'btn btn-primary'}>Source on GitHub ↗</a>}
+      </div>
+    </header>
+
+    <Flow steps={p.flow} size="large" label="How it works" />
+
+    <div class="detail">
+      <article>
+        <div class="prose numbered"><Content /></div>
+
+        {p.decisions.length > 0 && (
+          <section class="block">
+            <p class="label">{num()}</p>
+            <h2 class="block-title">Key decisions</h2>
+            <ul class="decisions">
+              {p.decisions.map((d) => <li><strong>{d.title}</strong><p>{d.text}</p></li>)}
+            </ul>
+          </section>
+        )}
+
+        {p.metrics.length > 0 && (
+          <section class="block">
+            <p class="label">{num()}</p>
+            <h2 class="block-title">Results</h2>
+            <dl class="metrics boxed">
+              {p.metrics.map((m) => <div><dt>{m.label}</dt><dd>{m.value}</dd></div>)}
+            </dl>
+          </section>
+        )}
+
+        {p.next && (
+          <section class="block">
+            <p class="label">{num()}</p>
+            <h2 class="block-title">What’s next</h2>
+            <p class="lead">{p.next}</p>
+          </section>
+        )}
+      </article>
+
+      <Aside
+        rows={[
+          { label: 'Role', value: p.role },
+          { label: 'Timeline', value: p.timeline },
+          { label: 'Status', value: p.building ? 'Currently building' : undefined },
+          { label: 'Stack', value: p.stack.join(' · ') },
+          { label: 'Links', links },
+        ]}
+      />
+    </div>
+
+    <Related items={related} />
+
+    <nav class="pager" aria-label="More projects">
+      {prev ? <a href={`/work/${prev.id}`}><span>← Previous</span><span>{prev.data.title}</span></a> : <span></span>}
+      {next ? <a href={`/work/${next.id}`}><span>Next →</span><span>{next.data.title}</span></a> : <a href="/work"><span>Back to</span><span>All work</span></a>}
+    </nav>
+  </div>
+</Base>
+
+<style>
+  .page-head { padding-top: 40px; }
+  .top { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
+  .big { font-size: clamp(18px, 1.8vw, 22px); max-width: 760px; }
+  .link-row { gap: 12px; }
+  article .block { margin-top: 64px; }
+  article .block .label { margin-bottom: -6px; }
+  .boxed { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .boxed > div { padding: 22px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--surface-2); }
+</style>

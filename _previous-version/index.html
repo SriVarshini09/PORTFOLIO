@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sri Varshini — AI engineer and researcher in the San Francisco Bay Area, building reliable agents, retrieval, evaluation and ML infrastructure." />
+  <meta name="theme-color" content="#07080B" />
+  <title>Sri Varshini — AI Engineer / Researcher / Builder</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page-grid" aria-hidden="true"></div>
+
+  <header class="nav">
+    <a href="#top" class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>SRI VARSHINI</span>
+    </a>
+
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#now">[00] Now</a>
+      <a href="#work">[01] Work</a>
+      <a href="#research">[02] Research</a>
+      <a href="#experience">[03] Experience</a>
+      <a href="#education">[04] Education</a>
+      <a href="#about">[05] About</a>
+    </nav>
+
+    <div class="nav-actions">
+      <a class="profile-shortcut" href="#about">
+        <img src="assets/my-profile.png" alt="" />
+        <span>my profile</span>
+      </a>
+      <div class="nav-socials">
+        <a href="https://github.com/SriVarshini09" target="_blank" rel="noreferrer" aria-label="GitHub">GH</a>
+        <a href="https://www.linkedin.com/in/ptvsv/" target="_blank" rel="noreferrer" aria-label="LinkedIn">in</a>
+        <a href="https://x.com/Sri_Padamata_" target="_blank" rel="noreferrer" aria-label="X">X</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero shell">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="dot"></span> AI ENGINEER / RESEARCHER / BUILDER</div>
+
+        <h1>
+          I build AI systems<br />
+          <span>that survive<br />contact with reality.</span>
+        </h1>
+
+        <p class="hero-sub">
+          Agents, retrieval, evaluation and infrastructure.<br />
+          I build them, test them, break them and ship them.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#work" class="primary-btn">See my work <span>→</span></a>
+          <a href="https://github.com/SriVarshini09" target="_blank" rel="noreferrer" class="text-link">GitHub ↗</a>
+          <a href="#research" class="text-link">Research ↗</a>
+        </div>
+
+        <div class="hero-facts">
+          <span>M.S. ARTIFICIAL INTELLIGENCE / RIT</span>
+          <span>SAN FRANCISCO BAY AREA</span>
+        </div>
+      </div>
+
+      <div class="hero-system" aria-hidden="true">
+        <div class="orbit">
+          <span class="axis horizontal"></span>
+          <span class="axis vertical"></span>
+          <span class="orbit-ring ring-a"></span>
+          <span class="orbit-ring ring-b"></span>
+          <span class="orbit-ring ring-c"></span>
+          <span class="signal s1"></span>
+          <span class="signal s2"></span>
+          <span class="signal s3"></span>
+          <span class="signal s4"></span>
+
+          <span class="orbit-word top">AGENTS</span>
+          <span class="orbit-word right">INFRASTRUCTURE</span>
+          <span class="orbit-word bottom">EVALUATION</span>
+          <span class="orbit-word left">RESEARCH</span>
+
+          <div class="planet">
+            <span>SRI</span>
+          </div>
+        </div>
+
+        <div class="build-counter">
+          <div><span>BUILDS</span><strong>14+</strong></div>
+          <div><span>RESEARCH</span><strong>03</strong></div>
+          <div><span>PUBLICATION</span><strong>01</strong></div>
+          <div><span>NOW</span><strong>SHAPI</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="signal-strip">
+      <div class="shell signal-inner">
+        <span class="mono">WORKING ACROSS</span>
+        <span>Agents</span>
+        <span>Agent Reliability</span>
+        <span>RAG</span>
+        <span>Evaluation</span>
+        <span>ML Infrastructure</span>
+        <span>Computer Vision</span>
+        <span>Multilingual AI</span>
+      </div>
+    </section>
+
+    <section id="now" class="section shell now">
+      <div class="section-kicker">00 / CURRENTLY BUILDING</div>
+      <div class="now-layout">
+        <div class="now-copy">
+          <h2>SHAPI.<br /><span>Self-maintaining APIs.</span></h2>
+          <p>
+            Infrastructure for business-critical integrations, for teams and for AI agents. SHAPI maps every
+            third-party API a codebase depends on into an <code>api.lock</code> (each call site and the status codes,
+            fields, enums, headers and params it relies on), flags the call sites a known breaking change actually hits,
+            and fixes them behind a contract test.
+          </p>
+          <div class="project-actions">
+            <a href="https://shapi.dev" target="_blank" rel="noreferrer">shapi.dev ↗</a>
+            <a href="https://github.com/SriVarshini09/YC" target="_blank" rel="noreferrer">Source ↗</a>
+            <a href="https://github.com/SriVarshini09/shapi-advisories" target="_blank" rel="noreferrer">Advisory database ↗</a>
+          </div>
+        </div>
+
+        <ol class="flow-list" aria-label="How SHAPI fixes a breaking change">
+          <li><span>01</span><div><strong>Scan</strong><p>Build <code>api.lock</code> from every third-party call site.</p></div></li>
+          <li><span>02</span><div><strong>Match</strong><p>Check it against an open database of provider behavior changes.</p></div></li>
+          <li><span>03</span><div><strong>Prove</strong><p>Generate a contract test and confirm it fails.</p></div></li>
+          <li><span>04</span><div><strong>Fix</strong><p>Apply the recipe, keep it only if the test passes, open a PR with the evidence.</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="work" class="section shell divided">
+      <div class="section-kicker">01 / SELECTED WORK</div>
+      <div class="section-intro">
+        <div>
+          <h2>Projects<br /><span>I’ve built.</span></h2>
+        </div>
+        <p>
+          Grouped by what they are for. Each one was chosen for technical depth, measurable results
+          or end-to-end product thinking, and each links to its source.
+        </p>
+      </div>
+
+      <!-- Group A -->
+      <div class="group-head">
+        <span class="group-index">A</span>
+        <h3>Agent reliability &amp; infrastructure</h3>
+        <span class="group-count">03 PROJECTS</span>
+      </div>
+      <div class="projects-grid">
+        <article class="project-card project-wide">
+          <div class="card-topline"><span>A1 / KERNA</span><span>AGENT RUNTIME / RUST</span></div>
+          <div class="project-layout">
+            <div class="project-copy">
+              <h3>A local-first trust layer for AI agents.</h3>
+              <p>
+                Kerna is a Rust runtime that sits between a model and the MCP tools that can touch files, services
+                and external systems. Before a tool runs, it checks explicit permissions, policy and budgets; afterwards
+                it writes a structured receipt to local SQLite. Tools run as isolated MCP plugins, so models and
+                capabilities stay replaceable.
+              </p>
+              <div class="metrics">
+                <div><strong>FAIL-CLOSED</strong><span>PERMISSIONS</span></div>
+                <div><strong>HARD</strong><span>BUDGETS</span></div>
+                <div><strong>LOCAL</strong><span>RUN RECEIPTS</span></div>
+              </div>
+              <div class="project-actions">
+                <a href="https://github.com/SriVarshini09/kerna" target="_blank" rel="noreferrer">View on GitHub ↗</a>
+                <a href="https://kerna.run" target="_blank" rel="noreferrer">kerna.run ↗</a>
+              </div>
+            </div>
+            <div class="mini-viz policy-viz kerna-viz">
+              <span>GOAL</span><b>→</b><span>POLICY + BUDGETS</span><b>→</b><span class="hold">APPROVAL</span><b>→</b><span>MCP TOOL</span><b>→</b><span>RECEIPT</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="card-topline"><span>A2 / AGENTOPS</span><span>OBSERVABILITY</span></div>
+          <h3>A control tower for tracing, debugging and auditing agent runs.</h3>
+          <p>
+            Every run is recorded as a trace of typed steps, so you can replay the reasoning, see which tool failed
+            and retried, estimate cost, classify risk, and hold risky actions for human approval.
+          </p>
+          <div class="mini-viz trace-viz">
+            <span>PLAN</span><span>LOGS</span><span>METRICS</span><span>ROOT CAUSE</span><span>RUNBOOK</span>
+            <span>RISK</span><span class="hold">APPROVAL</span><span>CRITIC</span><span>AUDIT</span>
+          </div>
+          <div class="mini-metrics stacked"><span>FASTAPI</span><span>REACT</span><span>POSTGRES TRACE STORE</span></div>
+          <a class="repo-link" href="https://github.com/SriVarshini09/agentops" target="_blank" rel="noreferrer">View on GitHub ↗</a>
+        </article>
+
+        <article class="project-card">
+          <div class="card-topline"><span>A3 / CHIEF</span><span>PERSONAL AGENT</span></div>
+          <h3>A personal agent that notices, proposes, and acts only after you approve.</h3>
+          <p>
+            Chief watches calendar, email and sleep data, proposes a specific fix when something needs attention,
+            and holds every write (a calendar edit, a sent email) for an Approve tap. Skills are single files.
+          </p>
+          <div class="mini-viz policy-viz">
+            <span>NOTICE</span><b>→</b><span>PROPOSE</span><b>→</b><span class="hold">APPROVE</span><b>→</b><span>ACT</span>
+          </div>
+          <div class="mini-metrics stacked"><span>OPEN SOURCE / MIT</span><span>HACKATHON BUILD / SF 2026</span></div>
+          <a class="repo-link" href="https://github.com/SriVarshini09/chief" target="_blank" rel="noreferrer">View on GitHub ↗</a>
+        </article>
+      </div>
+
+      <!-- Group B -->
+      <div class="group-head">
+        <span class="group-index">B</span>
+        <h3>Agent products</h3>
+        <span class="group-count">02 PROJECTS</span>
+      </div>
+      <div class="projects-grid">
+        <article class="project-card project-wide">
+          <div class="card-topline">
+            <span>B1 / NORI</span>
+            <span>OPEN SOURCE / AGENT</span>
+          </div>
+          <div class="project-layout">
+            <div class="project-copy">
+              <h3>Job search infrastructure built around a career graph.</h3>
+              <p>
+                Nori finds roles, researches companies, matches requirements against evidence from your own history,
+                tailors one-page resumes where every bullet traces back to a fact about you, fills ATS forms with
+                review-before-submit, tracks replies, and can be driven from Slack, Telegram, WhatsApp, email or MCP.
+                Built at the Cline × Composio × Parallel hackathon, Open Source AI Week, San Francisco.
+              </p>
+              <div class="metrics">
+                <div><strong>35K+</strong><span>ATS SOURCES</span></div>
+                <div><strong>GRAPH</strong><span>FACT-BACKED TAILORING</span></div>
+                <div><strong>LOCAL</strong><span>OPTIONAL LOCAL MODE</span></div>
+              </div>
+              <div class="project-actions">
+                <a href="https://github.com/SriVarshini09/Nori" target="_blank" rel="noreferrer">View on GitHub ↗</a>
+                <a href="https://jobs.norinote.xyz" target="_blank" rel="noreferrer">Live product ↗</a>
+              </div>
+            </div>
+            <div class="nori-visual technical-panel">
+              <div class="panel-label">CAREER GRAPH / OPPORTUNITY ROUTER</div>
+              <div class="graph-center">YOU</div>
+              <div class="graph-node a">SKILLS</div>
+              <div class="graph-node b">PROJECTS</div>
+              <div class="graph-node c">ROLES</div>
+              <div class="graph-node d">METRICS</div>
+              <div class="graph-node e">JOBS</div>
+              <svg viewBox="0 0 800 430" preserveAspectRatio="none">
+                <line x1="400" y1="210" x2="140" y2="95" />
+                <line x1="400" y1="210" x2="645" y2="95" />
+                <line x1="400" y1="210" x2="140" y2="335" />
+                <line x1="400" y1="210" x2="645" y2="335" />
+                <line x1="400" y1="210" x2="720" y2="210" />
+              </svg>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card project-wide">
+          <div class="card-topline"><span>B2 / MOTHERTONGUE</span><span>MULTILINGUAL AI</span></div>
+          <div class="project-layout">
+            <div class="project-copy">
+              <h3>Translate text, photos and documents into the language you understand best.</h3>
+              <p>
+                A learning-accessibility product with one flow: source, text extraction, translation, audio.
+                OCR, translation, speech, privacy controls and online/offline execution paths, with API keys kept
+                server-side and rate-limited routes.
+              </p>
+              <div class="mini-metrics stacked"><span>150+ LANGUAGE UI</span><span>PWA</span><span>OFFLINE PATHS</span><span>NEXT.JS</span></div>
+              <a class="repo-link" href="https://github.com/SriVarshini09/mothertongue" target="_blank" rel="noreferrer">View on GitHub ↗</a>
+            </div>
+            <div class="mini-viz language-viz">
+              <span>ENGLISH</span><span>తెలుగు</span><span>தமிழ்</span><span>हिन्दी</span>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Group C -->
+      <div class="group-head">
+        <span class="group-index">C</span>
+        <h3>Evaluation &amp; ML systems</h3>
+        <span class="group-count">03 PROJECTS</span>
+      </div>
+      <div class="projects-grid three">
+        <article class="project-card">
+          <div class="card-topline"><span>C1 / RAGTRUTH</span><span>RESEARCH</span></div>
+          <h3>Can multiple AI agents detect when RAG systems hallucinate?</h3>
+          <p>
+            A zero-shot three-agent pipeline for claim extraction, verification and hallucination decisions.
+          </p>
+          <div class="mini-viz chart-viz">
+            <div class="chart-bars">
+              <i style="height:38%"></i><i style="height:48%"></i><i style="height:55%"></i>
+              <i style="height:61%"></i><i style="height:64.22%"></i>
+            </div>
+            <div class="mini-metrics">
+              <span>F1 0.642</span><span>600 RECORDS</span><span>NO TRAINING DATA</span>
+            </div>
+          </div>
+          <a class="repo-link" href="https://github.com/SriVarshini09/ragtruth-hallucination-detection" target="_blank" rel="noreferrer">View on GitHub ↗</a>
+        </article>
+
+        <article class="project-card">
+          <div class="card-topline"><span>C2 / FEATURE PLATFORM</span><span>ML INFRA</span></div>
+          <h3>Real-time feature computation and multi-model serving.</h3>
+          <p>
+            Streaming ML infrastructure with a shared feature store, multi-model deployment and A/B testing.
+          </p>
+          <div class="mini-viz pipeline-viz">
+            <span>KAFKA</span><b>→</b><span>FEAST</span><b>→</b><span>REDIS</span><b>→</b><span>RAY</span>
+          </div>
+          <div class="mini-metrics stacked">
+            <span>10K EVENTS/SEC</span><span>5–10MS FEATURES</span><span>20–50MS INFERENCE</span>
+          </div>
+          <a class="repo-link" href="https://github.com/SriVarshini09/Real-Time-Feature-Store-ML-Serving-Platform" target="_blank" rel="noreferrer">View on GitHub ↗</a>
+        </article>
+
+        <article class="project-card">
+          <div class="card-topline"><span>C3 / VIDEO SEARCH</span><span>VISION</span></div>
+          <h3>Semantic search across video scenes using natural language.</h3>
+          <p>
+            Scene detection, CLIP embeddings and Qdrant vector search behind a FastAPI service and web interface.
+          </p>
+          <div class="mini-viz filmstrip">
+            <div>00:12</div><div>00:31</div><div>01:07</div><div>01:42</div>
+          </div>
+          <div class="mini-metrics stacked"><span>CLIP</span><span>QDRANT</span><span>200–500MS SEARCH</span></div>
+          <a class="repo-link" href="https://github.com/SriVarshini09/Real-Time-Video-Search-Platform" target="_blank" rel="noreferrer">View on GitHub ↗</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="research" class="section shell divided">
+      <div class="section-kicker">02 / RESEARCH &amp; PUBLICATIONS</div>
+      <div class="research-layout">
+        <div class="research-title">
+          <h2>Research that<br /><span>measures.</span></h2>
+          <p>
+            Work spanning model evaluation, efficient deep learning and the reliability of retrieval-augmented systems.
+          </p>
+        </div>
+
+        <div class="research-list">
+          <article>
+            <div class="research-meta">PUBLICATION / ARXIV / JAN 2026</div>
+            <h3>Lightweight Channel Attention for Efficient CNNs</h3>
+            <p>
+              Co-authored empirical study comparing SE, ECA and a proposed Lite Channel Attention mechanism across
+              ResNet-18 and MobileNetV2 on CIFAR-10, including accuracy, parameters, FLOPs and latency.
+            </p>
+            <a href="https://arxiv.org/abs/2601.01002" target="_blank" rel="noreferrer">Read publication ↗</a>
+          </article>
+
+          <article>
+            <div class="research-meta">RIT GRADUATE RESEARCH / 2026</div>
+            <h3>Hallucination Detection in RAG Systems via Multi-Agent Claim Verification</h3>
+            <p>
+              Zero-shot multi-agent evaluation on RAGTruth across QA, summarization and data-to-text, with claim
+              decomposition, verification against source passages and task-specific decision rules.
+            </p>
+            <div class="result-row">
+              <div><strong>0.642</strong><span>F1</span></div>
+              <div><strong>0</strong><span>TRAINING EXAMPLES</span></div>
+              <div><strong>NO GPU</strong><span>COMPUTE</span></div>
+              <div><strong>~$0.0003</strong><span>PER RECORD</span></div>
+            </div>
+            <a href="https://github.com/SriVarshini09/ragtruth-hallucination-detection" target="_blank" rel="noreferrer">Research repository ↗</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience" class="section shell divided">
+      <div class="section-kicker">03 / EXPERIENCE</div>
+      <div class="timeline">
+        <article>
+          <div class="timeline-date">JAN 2026 — APR 2026</div>
+          <div>
+            <h3>Graduate Researcher</h3>
+            <h4>Rochester Institute of Technology (RIT)</h4>
+            <p>
+              Built a zero-shot multi-agent system for detecting hallucinations in RAG outputs. The pipeline
+              decomposed responses into factual claims, verified them against source passages, and flagged
+              unsupported spans using task-specific decision rules. Evaluated on RAGTruth across QA, summarization
+              and data-to-text, reaching 0.642 F1 with no training data, no GPU, and about $0.0003 processing cost per record.
+            </p>
+            <div class="tag-row"><span>MULTI-AGENT</span><span>RAG EVALUATION</span><span>RAGTRUTH</span></div>
+          </div>
+        </article>
+
+        <article>
+          <div class="timeline-date">JUN 2023 — FEB 2024</div>
+          <div>
+            <h3>Machine Learning Engineer</h3>
+            <h4>Novacis Digital LLC</h4>
+            <p>
+              Led projects using predictive analytics and natural language processing to improve business operations
+              and decision-making. Built and fine-tuned machine learning models, including deep learning and ensemble
+              methods, for complex business problems, and turned the results into visualizations that helped
+              cross-functional teams make informed decisions.
+            </p>
+            <div class="tag-row"><span>NLP</span><span>PREDICTIVE ANALYTICS</span><span>DEEP LEARNING</span><span>ENSEMBLES</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="education" class="section shell divided">
+      <div class="section-kicker">04 / EDUCATION</div>
+      <div class="education-grid">
+        <article>
+          <div class="education-date">AUG 2024 — MAY 2026</div>
+          <h3>Rochester Institute of Technology</h3>
+          <p>M.S., Artificial Intelligence</p>
+        </article>
+        <article>
+          <div class="education-date">AUG 2019 — MAY 2023</div>
+          <h3>R.M.K. Engineering College</h3>
+          <p>Bachelor’s, Computer Science</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="about" class="section shell divided">
+      <div class="section-kicker">05 / ABOUT</div>
+
+      <div class="about-layout">
+        <div class="about-copy">
+          <h2>More than<br /><span>just code.</span></h2>
+          <p>
+            I’m Sri Varshini, an AI engineer and researcher in the San Francisco Bay Area. I like building real systems
+            that keep working outside the clean boundaries of a demo.
+          </p>
+          <p>
+            My work spans agents, retrieval, evaluation, multimodal systems, ML infrastructure,
+            and the practical engineering that makes model behavior observable and useful.
+          </p>
+        </div>
+
+        <div class="profile-asset">
+          <img src="assets/my-profile.png" alt="My profile folder graphic" />
+          <div class="asset-caption">PERSONAL FILE / OPEN PROFILE</div>
+        </div>
+
+        <div class="about-meta">
+          <div>
+            <span>CURRENTLY</span>
+            <p>Building SHAPI: self-healing APIs and reliability infrastructure for AI agent integrations.</p>
+          </div>
+          <div>
+            <span>PREVIOUSLY</span>
+            <p>Graduate Researcher @ RIT<br />Machine Learning Engineer @ Novacis Digital</p>
+          </div>
+          <div>
+            <span>LINKS</span>
+            <p>
+              <a href="https://github.com/SriVarshini09" target="_blank" rel="noreferrer">GitHub ↗</a><br />
+              <a href="https://www.linkedin.com/in/ptvsv/" target="_blank" rel="noreferrer">LinkedIn ↗</a><br />
+              <a href="https://x.com/Sri_Padamata_" target="_blank" rel="noreferrer">Twitter / X ↗</a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stack-block">
+        <div class="stack-groups">
+          <div>
+            <div class="stack-label">LANGUAGES</div>
+            <div class="skill-cloud"><span>Python</span><span>TypeScript</span><span>JavaScript</span><span>SQL</span></div>
+          </div>
+          <div>
+            <div class="stack-label">AI / ML</div>
+            <div class="skill-cloud"><span>PyTorch</span><span>LLMs</span><span>RAG</span><span>Agents</span><span>MCP</span><span>Evaluation</span><span>CLIP</span></div>
+          </div>
+          <div>
+            <div class="stack-label">DATA &amp; INFRA</div>
+            <div class="skill-cloud"><span>Kafka</span><span>Redis</span><span>Feast</span><span>Ray Serve</span><span>MLflow</span><span>Qdrant</span><span>Postgres</span><span>Docker</span></div>
+          </div>
+          <div>
+            <div class="stack-label">PRODUCT</div>
+            <div class="skill-cloud"><span>FastAPI</span><span>React</span><span>Next.js</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell divided archive">
+      <div class="section-kicker">06 / ALL BUILDS</div>
+      <div class="archive-head">
+        <h2>More from<br /><span>GitHub.</span></h2>
+        <p>
+          Smaller experiments, course work and prototypes still matter. This archive keeps them visible without diluting the main story.
+        </p>
+      </div>
+
+      <div class="archive-list">
+        <a href="https://github.com/SriVarshini09/Multi-Agent-Document-Intelligence-System" target="_blank" rel="noreferrer"><span>Multi-Agent Document Intelligence System</span><em>PYTHON</em><b>↗</b></a>
+        <a href="https://github.com/SriVarshini09/shapi-advisories" target="_blank" rel="noreferrer"><span>SHAPI Advisories <small>Open database of third-party API behavior changes</small></span><em>JAVASCRIPT</em><b>↗</b></a>
+        <a href="https://github.com/SriVarshini09/shapi-demo" target="_blank" rel="noreferrer"><span>SHAPI Demo <small>A service broken by GitHub’s 204→200 change, fixed by SHAPI</small></span><em>TYPESCRIPT</em><b>↗</b></a>
+        <a href="https://github.com/SriVarshini09/Ticket_Master" target="_blank" rel="noreferrer"><span>Ticket Master <small>Intelligent support ticket router</small></span><em>PYTHON</em><b>↗</b></a>
+        <a href="https://github.com/SriVarshini09/fitmate-ai" target="_blank" rel="noreferrer"><span>FitMate AI</span><em>TYPESCRIPT</em><b>↗</b></a>
+        <a href="https://github.com/SriVarshini09/IDAI-720" target="_blank" rel="noreferrer"><span>IDAI-720 <small>Course work</small></span><em>PYTHON</em><b>↗</b></a>
+      </div>
+    </section>
+
+    <section class="section shell divided contact">
+      <div class="section-kicker">07 / CONNECT</div>
+      <h2>Building something<br /><span>difficult?</span></h2>
+      <div class="contact-links">
+        <a href="https://github.com/SriVarshini09" target="_blank" rel="noreferrer"><span>GitHub</span><em>@SriVarshini09</em><b>↗</b></a>
+        <a href="https://www.linkedin.com/in/ptvsv/" target="_blank" rel="noreferrer"><span>LinkedIn</span><em>/in/ptvsv</em><b>↗</b></a>
+        <a href="https://x.com/Sri_Padamata_" target="_blank" rel="noreferrer"><span>Twitter / X</span><em>@Sri_Padamata_</em><b>↗</b></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer shell">
+    <span>© 2026 SRI VARSHINI</span>
+    <span>AI / SYSTEMS / RESEARCH</span>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

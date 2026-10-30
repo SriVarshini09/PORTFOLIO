@@ -1,0 +1,37 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+const { project } = Astro.props;
+const p = project.data;
+const code = p.links.repo;
+const live = p.links.live;
+---
+
+<article class="card panel reveal" data-filter-item data-tags={p.theme}>
+  <div class="card-top">
+    <span class="label subtle">{p.tag}</span>
+    {p.building && <span class="badge"><span class="dot" aria-hidden="true"></span>Currently building</span>}
+  </div>
+  <h3 class="card-title"><a href={`/work/${project.id}`}>{p.title}</a></h3>
+  <p class="card-summary">{p.summary}</p>
+  {p.highlights.length > 0 && <ul class="bullets">{p.highlights.slice(0, 3).map((h) => <li>{h}</li>)}</ul>}
+  <ul class="tags">{p.stack.slice(0, 5).map((s) => <li class="tag">{s}</li>)}</ul>
+  <div class="card-actions">
+    <a href={`/work/${project.id}`} class="text-link"><span>Details →</span></a>
+    {code && <a href={code} target="_blank" rel="noreferrer" class="text-link"><span>Code ↗</span></a>}
+    {live && <a href={live} target="_blank" rel="noreferrer" class="text-link"><span>Live ↗</span></a>}
+  </div>
+</article>
+
+<style>
+  .card { display: flex; flex-direction: column; gap: 16px; }
+  .card-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; min-height: 28px; }
+  .card-title { margin: 0; font-size: clamp(24px, 2.2vw, 30px); font-weight: 400; letter-spacing: -0.02em; line-height: 1.15; }
+  .card-title a { transition: color 0.2s; }
+  .card-title a:hover { color: var(--cyan); }
+  .card-summary { margin: 0; color: var(--muted); font-size: 16px; }
+  .card-actions { margin-top: auto; padding-top: 6px; display: flex; flex-wrap: wrap; gap: 0 24px; border-top: 1px solid var(--line-soft); }
+</style>

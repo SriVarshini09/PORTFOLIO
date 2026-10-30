@@ -1,0 +1,36 @@
+---
+// "At a glance" box beside detail pages. Rows with no value are skipped.
+interface Row {
+  label: string;
+  value?: string;
+  links?: { label: string; href: string }[];
+}
+interface Props {
+  rows: Row[];
+  title?: string;
+}
+const { rows, title = 'At a glance' } = Astro.props;
+---
+
+<aside class="aside" aria-label={title}>
+  <p class="label">{title}</p>
+  <dl>
+    {
+      rows
+        .filter((r) => r.value || r.links?.length)
+        .map((r) => (
+          <div>
+            <dt>{r.label}</dt>
+            <dd>
+              {r.value}
+              {r.links?.map((l) => (
+                <a href={l.href} target={l.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer" style="display:block; padding-block: 3px">
+                  {l.label}
+                </a>
+              ))}
+            </dd>
+          </div>
+        ))
+    }
+  </dl>
+</aside>

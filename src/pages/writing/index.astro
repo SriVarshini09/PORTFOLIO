@@ -1,0 +1,28 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostList from '../../components/PostList.astro';
+import { getPosts } from '../../lib/content';
+
+const posts = await getPosts();
+const tags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
+const slug = (t: string) => t.toLowerCase().replace(/\s+/g, '-');
+---
+
+<Base title="Writing" description="Technical writing by Sri Varshini on agents, evaluation, infrastructure and research." active="writing">
+  <div class="wrap">
+    <header class="page-head">
+      <p class="label">Writing · {posts.length} {posts.length === 1 ? 'post' : 'posts'}</p>
+      <h1 class="h1">Notes from <span class="accent">the build.</span></h1>
+      <p class="lead">Technical notes and essays on building agents, evaluating models and the infrastructure in between.</p>
+    </header>
+
+    {tags.length > 1 && (
+      <div class="filters" role="group" aria-label="Filter posts by topic" data-filters="#all-posts">
+        <button type="button" class="filter" data-filter="all" aria-pressed="true">All</button>
+        {tags.map((t) => <button type="button" class="filter" data-filter={slug(t)} aria-pressed="false">{t}</button>)}
+      </div>
+    )}
+
+    <PostList posts={posts} id="all-posts" />
+  </div>
+</Base>

@@ -1,0 +1,103 @@
+---
+// Clickable skills: pick one and a short line under its group lists every project and role that used it.
+import { skillGroups, basicSkills } from '../skills';
+import { getProjects, getExperience } from '../lib/content';
+
+const projects = await getProjects();
+const roles = await getExperience();
+
+function resolve(ref: string) {
+  const [kind, id] = ref.split(':');
+  if (kind === 'project') {
+    const p = projects.find((x) => x.id === id);
+    if (!p) throw new Error(`skills.ts: unknown project "${id}"`);
+    return { title: p.data.title, href: `/work/${id}` };
+  }
+  const r = roles.find((x) => x.id === id);
+  if (!r) throw new Error(`skills.ts: unknown role "${id}"`);
+  return { title: `${r.data.role}, ${r.data.short}`, href: `/experience/${id}` };
+}
+
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const groups = skillGroups.map((g) => ({
+  label: g.label,
+  skills: g.skills.map((s) => ({ ...s, id: `skill-${slug(s.name)}`, places: s.uses.map(resolve) })),
+}));
+const all = groups.flatMap((g) => g.skills);
+const first = all.reduce((a, b) => (b.places.length > a.places.length ? b : a));
+---
+
+<div class="finder" data-skill-finder>
+  <p class="hint muted">Pick a skill to see where I used it.</p>
+  {groups.map((g) => (
+    <div class="group">
+      <p class="label subtle">{g.label}</p>
+      <div class="chip-row" role="group" aria-label={g.label}>
+        {g.skills.map((s) => (
+          <button type="button" class="chip" data-skill={s.id} aria-pressed={s.id === first.id ? 'true' : 'false'}>
+            {s.name}
+            <span class="count" aria-label={`${s.places.length} places`}>{s.places.length}</span>
+          </button>
+        ))}
+      </div>
+      {g.skills.map((s) => (
+        <p class="used" data-view={s.id} hidden={s.id !== first.id} aria-live="polite">
+          <span class="used-label">{s.name} · used in</span>
+          {s.places.map((p, i) => <>{i > 0 && <span class="sep" aria-hidden="true">·</span>}<a href={p.href}>{p.title}</a></>)}
+        </p>
+      ))}
+    </div>
+  ))}
+</div>
+
+<div class="basics">
+  <p class="label subtle">Also familiar with</p>
+  <ul class="tags">{basicSkills.map((b) => <li class="tag">{b}</li>)}</ul>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-skill-finder]').forEach((finder) => {
+    const chips = finder.querySelectorAll<HTMLButtonElement>('[data-skill]');
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        // Clicking the selected skill again closes its line.
+        const closing = chip.getAttribute('aria-pressed') === 'true';
+        const id = closing ? '' : chip.dataset.skill;
+        chips.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.skill === id)));
+        finder.querySelectorAll<HTMLElement>('[data-view]').forEach((v) => (v.hidden = v.dataset.view !== id));
+      });
+    });
+  });
+</script>
+
+<style>
+  .finder { display: flex; flex-direction: column; gap: 22px; }
+  .hint { margin: 0; font-size: 15px; }
+  .group .label { margin-bottom: 10px; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 8px 0 12px;
+    border: 1px solid #2b3a42; border-radius: 6px; background: transparent; cursor: pointer;
+    font-family: var(--mono); font-size: 12px; color: #c4ccd0; transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+  }
+  .chip:hover { border-color: var(--cyan-dim); color: var(--text); }
+  .chip[aria-pressed='true'] { background: var(--cyan); border-color: var(--cyan); color: var(--on-cyan); }
+  .count {
+    min-width: 22px; height: 22px; padding: 0 6px; display: inline-grid; place-items: center; border-radius: 4px;
+    background: rgba(139, 220, 248, 0.08); color: var(--cyan); font-size: 11px;
+  }
+  .chip[aria-pressed='true'] .count { background: rgba(6, 16, 23, 0.15); color: var(--on-cyan); }
+
+  .used {
+    margin: 12px 0 0; padding: 12px 16px; border: 1px solid var(--cyan-dim); border-radius: 6px; background: rgba(139, 220, 248, 0.04);
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; font-size: 15px;
+  }
+  .used[hidden] { display: none; }
+  .used-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--subtle); }
+  .used a { color: var(--cyan); border-bottom: 1px solid #2d4853; }
+  .used a:hover { border-color: var(--cyan); }
+  .sep { color: var(--subtle); }
+
+  .basics { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--line-soft); display: flex; flex-direction: column; gap: 12px; }
+  .basics .label { margin: 0; }
+</style>

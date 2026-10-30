@@ -1,0 +1,59 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProjectGrid from '../../components/ProjectGrid.astro';
+import { archive, themes } from '../../site';
+import { getProjects } from '../../lib/content';
+
+const projects = await getProjects();
+---
+
+<Base title="Work" description="Projects by Sri Varshini: agent infrastructure, agent products, evaluation and ML systems." active="work">
+  <div class="wrap">
+    <header class="page-head">
+      <p class="label">Work · {projects.length} projects</p>
+      <h1 class="h1">Projects <span class="accent">I’ve built.</span></h1>
+      <p class="lead">Chosen for technical depth, measurable results and end-to-end product thinking. Open any project for the problem, how it works and the decisions behind it.</p>
+    </header>
+
+    <div class="filters" role="group" aria-label="Filter projects by theme" data-filters="#all-projects">
+      <button type="button" class="filter" data-filter="all" aria-pressed="true">All</button>
+      {Object.entries(themes).map(([key, label]) => (
+        <button type="button" class="filter" data-filter={key} aria-pressed="false">{label}</button>
+      ))}
+    </div>
+
+    <ProjectGrid projects={projects} id="all-projects" />
+
+    <section class="archive" aria-labelledby="archive-title">
+      <div class="section-head">
+        <div>
+          <p class="label">Archive</p>
+          <h2 id="archive-title" class="h2">More from <span class="accent">GitHub.</span></h2>
+        </div>
+        <p class="lead">Smaller experiments, course work and companion repos. These link straight to the source.</p>
+      </div>
+      <ul class="rows">
+        {archive.map((a) => (
+          <li>
+            <a href={a.href} target="_blank" rel="noreferrer" class="row archive-row">
+              <span class="row-title">{a.name}</span>
+              <span class="muted">{a.line}</span>
+              <span class="label subtle">{a.lang} ↗</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .archive { margin-top: clamp(96px, 10vw, 140px); }
+  .archive-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) 130px; align-items: center; padding-block: 22px; }
+  .archive-row .row-title { font-size: 19px; }
+  .archive-row .label { text-align: right; }
+  @media (max-width: 760px) {
+    .archive-row { grid-template-columns: minmax(0, 1fr); }
+    .archive-row .label { text-align: left; }
+  }
+</style>

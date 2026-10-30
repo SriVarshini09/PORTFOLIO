@@ -1,0 +1,92 @@
+---
+import Base from '../layouts/Base.astro';
+import Portrait from '../components/Portrait.astro';
+import SkillFinder from '../components/SkillFinder.astro';
+import { site, hasResume, education } from '../site';
+import { getProjects } from '../lib/content';
+
+const building = (await getProjects()).find((p) => p.data.building);
+---
+
+<Base title="About" description="About Sri Varshini, an AI engineer and researcher in the San Francisco Bay Area." active="about">
+  <div class="wrap">
+    <section class="intro" aria-labelledby="about-title">
+      <div class="intro-copy">
+        <p class="label">About</p>
+        <h1 id="about-title" class="h1">Hi, I’m <span class="accent">Sri Varshini.</span></h1>
+        <p class="lead">
+          I’m an AI engineer and researcher in the San Francisco Bay Area. I build real systems that keep working outside
+          the clean boundaries of a demo.
+        </p>
+        <p class="lead">
+          My work spans agents, retrieval, evaluation, multimodal systems and ML infrastructure, and the practical
+          engineering that makes model behavior observable, measurable and safe to rely on. I like problems where the
+          answer has to be proven, not just generated.
+        </p>
+        {building && (
+          <p class="now">
+            <span class="badge"><span class="dot" aria-hidden="true"></span>Currently building</span>
+            <a href={`/work/${building.id}`}>{building.data.title} →</a>
+          </p>
+        )}
+      </div>
+      <div class="photo-col">
+        <Portrait />
+      </div>
+    </section>
+
+    <section class="section" id="education" aria-labelledby="edu-title">
+      <p class="label">Education</p>
+      <h2 id="edu-title" class="h2">Where I <span class="accent">studied.</span></h2>
+      <div class="edu">
+        {education.map((e) => (
+          <article class="reveal">
+            <p class="label subtle">{e.dates}</p>
+            <h3 class="h3">{e.school}</h3>
+            <p class="muted">{e.degree}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="stack-title">
+      <p class="label">Tech stack</p>
+      <h2 id="stack-title" class="h2">Tools I <span class="accent">reach for.</span></h2>
+      <div class="stack"><SkillFinder /></div>
+    </section>
+
+    <section class="section contact" aria-labelledby="contact-title">
+      <p class="label">Get in touch</p>
+      <h2 id="contact-title" class="h2">Building something <span class="accent">difficult?</span></h2>
+      <div class="link-row">
+        {site.email && <a href={`mailto:${site.email}`} class="btn btn-primary">Email me <span aria-hidden="true">→</span></a>}
+        {hasResume && <a href={site.resume} target="_blank" rel="noreferrer" class="btn btn-secondary">Resume ↓</a>}
+        {site.socials.map((s) => <a class="text-link" href={s.href} target="_blank" rel="noreferrer"><span>{s.label} ↗</span></a>)}
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .intro { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 72px; align-items: center; padding-block: clamp(56px, 8vw, 96px); }
+  .intro-copy { display: flex; flex-direction: column; gap: 22px; }
+  .now { margin: 8px 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 14px; padding-top: 22px; border-top: 1px solid var(--line-soft); }
+  .now a { color: var(--cyan); font-size: 16px; }
+  .photo-col { max-width: 420px; width: 100%; justify-self: end; }
+  .section > .label { margin-bottom: 22px; }
+  .edu { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 40px; border-top: 1px solid var(--line); }
+  .edu article { padding: 32px 40px 32px 0; display: flex; flex-direction: column; gap: 10px; }
+  .edu article + article { border-left: 1px solid var(--line); padding-left: 40px; }
+  .edu p { margin: 0; }
+  .stack { margin-top: 40px; }
+  .contact { display: flex; flex-direction: column; gap: 0; }
+  .contact .link-row { margin-top: 32px; gap: 12px 24px; }
+  @media (max-width: 1080px) {
+    .intro { grid-template-columns: minmax(0, 1fr); gap: 48px; }
+    .photo-col { justify-self: center; max-width: 360px; }
+  }
+  @media (max-width: 680px) {
+    .edu { grid-template-columns: minmax(0, 1fr); }
+    .edu article + article { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; }
+  }
+</style>

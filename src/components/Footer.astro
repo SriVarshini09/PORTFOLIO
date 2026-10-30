@@ -1,0 +1,34 @@
+---
+import { site } from '../site';
+---
+
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <div class="footer-top">
+      <div>
+        <p class="footer-name">{site.fullName}</p>
+        <p class="footer-role">AI / systems / research</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© {new Date().getFullYear()} {site.fullName}</span>
+      <a href="#main">Back to top ↑</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer { border-top: 1px solid var(--line-soft); margin-top: clamp(64px, 7vw, 96px); }
+  /* Pages that end with a padded section (like Home) don't need the extra gap. */
+  :global(main:has(> .section:last-child, > .wrap:last-child > .section:last-child)) + .footer { margin-top: 0; }
+  .footer-inner { padding-block: 48px 28px; display: flex; flex-direction: column; gap: 36px; }
+  .footer-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px 48px; }
+  .footer-name { margin: 0; font-size: 14px; font-weight: 500; letter-spacing: 0.13em; text-transform: uppercase; }
+  .footer-role { margin: 6px 0 0; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--subtle); }
+  .footer-bottom {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-top: 20px;
+    border-top: 1px solid var(--line-soft); font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--subtle);
+  }
+  .footer-bottom a { color: var(--subtle); }
+  .footer-bottom a:hover { color: var(--cyan); }
+</style>

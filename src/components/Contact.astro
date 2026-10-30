@@ -1,0 +1,111 @@
+---
+// "Get in touch" block: contact details, a message form and quick actions.
+import { site, hasResume } from '../site';
+
+const methods = [
+  site.email && { label: 'Email', value: site.email, href: `mailto:${site.email}` },
+  site.phone && { label: 'Phone', value: site.phone, href: `tel:+1${site.phone.replace(/\D/g, '')}` },
+  { label: 'LinkedIn', value: 'Connect on LinkedIn', href: site.socials[1].href, external: true },
+  { label: 'GitHub', value: 'View GitHub profile', href: site.socials[0].href, external: true },
+  { label: 'X / Twitter', value: 'Follow on X', href: site.socials[2].href, external: true },
+].filter(Boolean) as { label: string; value: string; href: string; external?: boolean }[];
+---
+
+<div class="contact-grid">
+  <div class="methods">
+    {methods.map((m) => (
+      <a href={m.href} class:list={['method panel', { wide: m.label === 'Email' }]} target={m.external ? '_blank' : undefined} rel={m.external ? 'noreferrer' : undefined}>
+        <span class="label subtle">{m.label}</span>
+        <span class="method-value">{m.value}{m.external && ' ↗'}</span>
+      </a>
+    ))}
+    <div class="quick panel">
+      <span class="label subtle">Quick actions</span>
+      <div class="link-row">
+        {hasResume && <a href={site.resume} class="btn btn-secondary" target="_blank" rel="noreferrer">Download resume ↓</a>}
+        {site.email && <a href={`mailto:${site.email}`} class="btn btn-secondary">Send email</a>}
+      </div>
+    </div>
+  </div>
+
+  <form class="form panel" data-contact-form data-endpoint={site.formEndpoint} data-email={site.email} novalidate>
+    <h3 class="form-title">Send me a message</h3>
+    <div class="row-2">
+      <label>Your name<input name="name" type="text" autocomplete="name" required /></label>
+      <label>Your email<input name="email" type="email" autocomplete="email" required /></label>
+    </div>
+    <label>Subject<input name="subject" type="text" required /></label>
+    <label>Message<textarea name="message" rows="6" required></textarea></label>
+    <p class="form-status" role="status" aria-live="polite"></p>
+    <button type="submit" class="btn btn-primary">Send message <span aria-hidden="true">→</span></button>
+  </form>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('[data-contact-form]').forEach((form) => {
+    const status = form.querySelector<HTMLElement>('.form-status')!;
+    form.addEventListener('input', () => (status.textContent = ''));
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const missing = ['name', 'email', 'subject', 'message'].find((k) => !String(data.get(k) || '').trim());
+      if (missing) {
+        status.textContent = 'Please fill in every field.';
+        form.querySelector<HTMLElement>(`[name="${missing}"]`)?.focus();
+        return;
+      }
+      const emailField = form.querySelector<HTMLInputElement>('[name="email"]')!;
+      if (!emailField.checkValidity()) {
+        status.textContent = 'Please enter a valid email address.';
+        emailField.focus();
+        return;
+      }
+      const endpoint = form.dataset.endpoint;
+      if (endpoint) {
+        status.textContent = 'Sending…';
+        try {
+          const res = await fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+          if (!res.ok) throw new Error();
+          form.reset();
+          status.textContent = 'Thanks! Your message was sent.';
+        } catch {
+          status.textContent = 'Something went wrong. Please email me directly instead.';
+        }
+        return;
+      }
+      // No form service configured: open the visitor's email app with the message filled in.
+      const body = `${data.get('message')}\n\n— ${data.get('name')} (${data.get('email')})`;
+      window.location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(String(data.get('subject')))}&body=${encodeURIComponent(body)}`;
+      status.textContent = 'Opening your email app…';
+    });
+  });
+</script>
+
+<style>
+  .contact-grid { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 20px; align-items: stretch; }
+  /* Every contact card keeps the brighter outline; hover brightens it a step further. */
+  .contact-grid .panel { border-color: var(--cyan-dim); }
+  .contact-grid .panel:hover { border-color: rgba(139, 220, 248, 0.45); }
+  /* The quick-actions card stretches so both columns end at the same line. */
+  .methods { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto auto auto 1fr; gap: 20px; }
+  .method { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .method.wide { grid-column: 1 / -1; }
+  .method-value { font-size: 16px; overflow-wrap: anywhere; transition: color 0.2s; }
+  .method:hover .method-value { color: var(--cyan); }
+  .quick { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 16px; }
+  .quick .link-row { gap: 12px; }
+  .form { display: flex; flex-direction: column; gap: 18px; }
+  .form-title { margin: 0; font-size: 24px; font-weight: 400; letter-spacing: -0.02em; }
+  .row-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+  label { display: flex; flex-direction: column; gap: 8px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--subtle); }
+  input, textarea {
+    font: 300 16px var(--sans); color: var(--text); background: var(--surface-2);
+    border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; min-height: 46px; resize: vertical;
+  }
+  input:focus, textarea:focus { outline: none; border-color: var(--cyan); }
+  .form-status { margin: 0; min-height: 1.4em; font-size: 14px; color: var(--cyan); }
+  .form .btn { align-self: flex-start; cursor: pointer; }
+  @media (max-width: 960px) { .contact-grid { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 960px) { .methods { grid-template-rows: none; } }
+  @media (max-width: 560px) { .methods, .row-2 { grid-template-columns: minmax(0, 1fr); } }
+</style>

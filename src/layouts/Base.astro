@@ -1,0 +1,83 @@
+---
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Particles from '../components/Particles.astro';
+import Butterflies from '../components/Butterflies.astro';
+import { site } from '../site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  active?: string;
+}
+
+const { title, description = site.description, active = '' } = Astro.props;
+const pageTitle = title ? `${title} — ${site.fullName}` : site.title;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#07080B" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="page-grid" aria-hidden="true"></div>
+    <Particles />
+    <Butterflies />
+    <Nav active={active} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      // Fade sections in as they scroll into view.
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in');
+              io.unobserve(entry.target);
+            }
+          }
+        },
+        { threshold: 0.08 },
+      );
+      document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+      // Filter buttons: <button data-filter="key"> toggles [data-filter-item] with matching data-tags.
+      document.querySelectorAll<HTMLElement>('[data-filters]').forEach((group) => {
+        const scope = document.querySelector(group.dataset.filters!);
+        if (!scope) return;
+        const buttons = group.querySelectorAll<HTMLButtonElement>('[data-filter]');
+        buttons.forEach((button) => {
+          button.addEventListener('click', () => {
+            const key = button.dataset.filter!;
+            buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === button)));
+            scope.querySelectorAll<HTMLElement>('[data-filter-item]').forEach((item) => {
+              const tags = (item.dataset.tags || '').split(' ');
+              item.hidden = key !== 'all' && !tags.includes(key);
+            });
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
