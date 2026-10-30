@@ -13,7 +13,7 @@ const nameOf = (id: string) => projects.find((p) => p.id === id)?.data.title ?? 
     <header class="page-head">
       <p class="label">Experience</p>
       <h1 class="h1">Where I’ve <span class="accent">worked.</span></h1>
-      {hasResume && <div><a href={site.resume} class="btn btn-secondary" target="_blank" rel="noreferrer">Resume ↓</a></div>}
+      {hasResume && <div><a href={site.resume} class="btn btn-secondary" target="_blank" rel="noreferrer">View resume ↗</a></div>}
     </header>
 
     <section aria-labelledby="roles-title">

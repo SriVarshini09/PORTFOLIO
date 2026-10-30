@@ -22,7 +22,8 @@ const methods = [
     <div class="quick panel">
       <span class="label subtle">Quick actions</span>
       <div class="link-row">
-        {hasResume && <a href={site.resume} class="btn btn-secondary" target="_blank" rel="noreferrer">Download resume ↓</a>}
+        {hasResume && <a href={site.resume} class="btn btn-secondary" target="_blank" rel="noreferrer">View resume ↗</a>}
+        {hasResume && <a href={site.resume} class="btn btn-secondary" download={`${site.fullName.replace(/\s+/g, '_')}_Resume.pdf`}>Download resume ↓</a>}
         {site.email && <a href={`mailto:${site.email}`} class="btn btn-secondary">Send email</a>}
       </div>
     </div>
