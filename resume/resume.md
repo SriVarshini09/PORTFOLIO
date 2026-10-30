@@ -2,7 +2,7 @@
 
 **AI / Machine Learning Engineer** · San Francisco Bay Area, CA
 
-585-623-7981 · <srivarshini09.edu@gmail.com> · [linkedin.com/in/ptvsv](https://www.linkedin.com/in/ptvsv/) · [github.com/SriVarshini09](https://github.com/SriVarshini09)
+585-623-7981 · <srivarshini09.edu@gmail.com> · [linkedin.com/in/ptvsv](https://www.linkedin.com/in/ptvsv/) · [github.com/SriVarshini09](https://github.com/SriVarshini09) · [portfoliosri-chi.vercel.app](https://portfoliosri-chi.vercel.app)
 
 ## Summary
 
